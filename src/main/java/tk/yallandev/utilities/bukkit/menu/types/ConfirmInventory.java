@@ -2,12 +2,12 @@ package tk.yallandev.utilities.bukkit.menu.types;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import tk.yallandev.utilities.bukkit.item.ItemBuilder;
 import tk.yallandev.utilities.bukkit.menu.MenuInventory;
-import tk.yallandev.utilities.bukkit.menu.click.ClickType;
 import tk.yallandev.utilities.bukkit.menu.click.MenuClickHandler;
 
 public class ConfirmInventory {

@@ -71,6 +71,10 @@ public class MenuInventory {
 		setItem(slot, item);
 	}
 
+	public void removeItem(int slot) {
+		this.slotItem.remove(slot);
+	}
+
 	public void setItem(int slot, MenuItem item) {
 		this.slotItem.put(slot, item);
 
@@ -136,6 +140,13 @@ public class MenuInventory {
 		}
 		updateTitle(p);
 		p = null;
+	}
+
+	public void updateSlot(Player player, int slot) {
+		if (slotItem.containsKey(slot))
+			player.getOpenInventory().getTopInventory().setItem(slot, slotItem.get(slot).getStack());
+		else
+			player.getOpenInventory().getTopInventory().setItem(slot, null);
 	}
 
 	public void setTitle(String title) {

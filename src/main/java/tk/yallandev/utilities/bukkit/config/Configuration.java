@@ -4,7 +4,9 @@ import static tk.yallandev.utilities.bukkit.utils.StringUtils.translateColor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Material;
@@ -60,9 +62,13 @@ public class Configuration {
 			return (String) this.configMap.get(path);
 		}
 
-		String object = fileConfiguration.getString(path, String.format("[not-found: %s]", path));
+		String object = getString(path);
 		this.configMap.put(path, object);
 		return object;
+	}
+
+	public String getString(String path) {
+		return fileConfiguration.getString(path, String.format("[not-found: %s]", path));
 	}
 
 	public boolean asBoolean(String path) {
@@ -70,9 +76,13 @@ public class Configuration {
 			return (boolean) this.configMap.get(path);
 		}
 
-		boolean object = fileConfiguration.getBoolean(path, false);
+		boolean object = getBoolean(path);
 		this.configMap.put(path, object);
 		return object;
+	}
+
+	public boolean getBoolean(String path) {
+		return fileConfiguration.getBoolean(path, false);
 	}
 
 	public int asInteger(String path) {
@@ -80,9 +90,13 @@ public class Configuration {
 			return (int) this.configMap.get(path);
 		}
 
-		int object = fileConfiguration.getInt(path, 1);
+		int object = getInteger(path);
 		this.configMap.put(path, object);
 		return object;
+	}
+
+	public int getInteger(String path) {
+		return fileConfiguration.getInt(path, 1);
 	}
 
 	public double asDouble(String path) {
@@ -120,6 +134,12 @@ public class Configuration {
 			return (ItemStack) this.configMap.get(path);
 		}
 
+		ItemStack itemStack = getItemStack(path);
+		this.configMap.put(path, itemStack);
+		return itemStack;
+	}
+
+	public ItemStack getItemStack(String path) {
 		String displayName = fileConfiguration.getString(path + ".displayName");
 		Material material = null;
 
@@ -143,6 +163,13 @@ public class Configuration {
 		} catch (NumberFormatException ex) {
 		}
 
+		int amount = fileConfiguration.getInt(path + ".amount", 1);
+
+		List<String> loreList = new ArrayList<>();
+
+		if (fileConfiguration.contains(path + ".lore"))
+			loreList = fileConfiguration.getStringList(path + ".lore");
+
 		String skinName = fileConfiguration.getString(path + ".skinName");
 		String skinLink = fileConfiguration.getString(path + ".skinLink");
 
@@ -153,11 +180,12 @@ public class Configuration {
 
 		itemBuilder.name(translateColor(displayName));
 		itemBuilder.durability(data);
+		itemBuilder.lore(loreList);
 		itemBuilder.skin(skinName);
 		itemBuilder.skinURL(skinLink);
+		itemBuilder.amount(amount);
 
 		ItemStack itemStack = itemBuilder.build();
-		this.configMap.put(path, itemStack);
 		return itemStack;
 	}
 

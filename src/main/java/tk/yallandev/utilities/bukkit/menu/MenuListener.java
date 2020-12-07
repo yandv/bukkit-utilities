@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -16,8 +15,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-
-import tk.yallandev.utilities.bukkit.menu.click.ClickType;
 
 public class MenuListener implements Listener {
 
@@ -28,7 +25,7 @@ public class MenuListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
-	public void onInventoryClickListener(InventoryClickEvent event) {
+	public void onInventoryClick(InventoryClickEvent event) {
 		if (event.getInventory() == null)
 			return;
 
@@ -48,9 +45,8 @@ public class MenuListener implements Listener {
 		if (menu.hasItem(event.getSlot())) {
 			Player p = (Player) event.getWhoClicked();
 			MenuItem item = menu.getItem(event.getSlot());
-			item.getHandler().onClick(p, inv,
-					((event.getAction() == InventoryAction.PICKUP_HALF) ? ClickType.RIGHT : ClickType.LEFT),
-					event.getCurrentItem(), event.getSlot());
+
+			item.getHandler().onClick(p, inv, event.getClick(), event.getCurrentItem(), event.getSlot());
 		} else {
 			event.setCancelled(true);
 		}
